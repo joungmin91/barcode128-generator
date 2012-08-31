@@ -5,7 +5,6 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Printing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using OnBarcode.Barcode;
@@ -20,13 +19,16 @@ namespace CSharpBarcode128
 {
     public partial class mainFrm : Form
     {
+        const string custom_page = "CustomPage";
+        const int custom_width = 150;
+        const int custom_height = 76;
+
         private MySQLDatabase m_db = null;
         private string m_server = null;
         private string m_username = null;
         private string m_password = null;
         private string m_port = null;
         private List<BarcodeItem> m_lstBarcode = null;
-        private string m_barcodeFile = null;
         private string m_txtAN = null;
 
         public mainFrm()
@@ -173,11 +175,6 @@ namespace CSharpBarcode128
             return barcode.GetBarcodeBMPImage();
         }
 
-        private void ShowBarcode()
-        {
-            pictureBox.Image = System.Drawing.Image.FromFile(m_barcodeFile);
-        }
-
         private void btnGen_Click(object sender, EventArgs e)
         {
             try
@@ -234,10 +231,14 @@ namespace CSharpBarcode128
 
         private void btnPrint_Click(object sender, EventArgs e)
         {
+            PaperSize ps = new PaperSize(custom_page, custom_width, custom_height * m_lstBarcode.Count);
+            ps.RawKind = (int)PaperKind.Custom;
+
             PrintDialog printDlg = new PrintDialog();
             PrintDocument printDoc = new PrintDocument();
             printDoc.DocumentName = "Barcode";
             printDoc.PrintPage += new PrintPageEventHandler(printDoc_PrintPage);
+            printDoc.DefaultPageSettings.PaperSize = ps;
             printDlg.Document = printDoc;
             if (printDlg.ShowDialog() == DialogResult.OK)
                 printDoc.Print();
@@ -245,8 +246,8 @@ namespace CSharpBarcode128
 
         void printDoc_PrintPage(object sender, PrintPageEventArgs e)
         {
-            int x = 10;
-            int y = 10;
+            int x = 5;
+            int y = 2;
             foreach (BarcodeItem item in m_lstBarcode)
             {
                 e.Graphics.DrawImage(item.image, new Point(x, y));
@@ -308,10 +309,18 @@ namespace CSharpBarcode128
 
         private void btnPrintPreview_Click(object sender, EventArgs e)
         {
+            PaperSize ps = new PaperSize(custom_page, custom_width, custom_height * m_lstBarcode.Count);
+            ps.RawKind = (int)PaperKind.Custom;
+
             PrintPreviewDialog printDlg = new PrintPreviewDialog();
             PrintDocument printDoc = new PrintDocument();
             printDoc.DocumentName = "Barcode";
             printDoc.PrintPage += new PrintPageEventHandler(printDoc_PrintPage);
+            printDoc.DefaultPageSettings.PaperSize = ps;
+            printDoc.DefaultPageSettings.Margins.Top = 0;
+            printDoc.DefaultPageSettings.Margins.Left = 0;
+            printDoc.DefaultPageSettings.Margins.Right = 0;
+            printDoc.DefaultPageSettings.Margins.Bottom = 0;
             printDlg.Document = printDoc;
             if (printDlg.ShowDialog() == DialogResult.OK)
                 printDoc.Print();
