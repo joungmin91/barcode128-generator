@@ -51,6 +51,7 @@ namespace CSharpBarcode128
             // Init datagrid view.
             dgView.AllowUserToAddRows = false;
             dgView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgView.ReadOnly = true;
             dgView.ColumnCount = 1;
             dgView.Columns[0].HeaderText = "Barcode Label";
             dgView.Columns[0].Width = 250;
@@ -84,6 +85,7 @@ namespace CSharpBarcode128
         {
             // Clear data grid view.
             dgView.Rows.Clear();
+            pictureBox.Image = null;
             // Load new config
             LoadFromXML();
             try
@@ -205,7 +207,7 @@ namespace CSharpBarcode128
             barcode.ChecksumText = true;
             barcode.GenerateChecksum = true;
             barcode.StartStopText = true;
-            barcode.BarHeight = 40;
+            barcode.BarHeight = 25;
             barcode.Code = m_txtAN;
             barcode.CodeAbove = "HN_" + txtHN.Text + "  " + txtFirstName.Text + " " + txtLastName.Text;
             return barcode.GetBarcodeBMPImage();
@@ -273,7 +275,9 @@ namespace CSharpBarcode128
                 return;
             }
 
-            PaperSize ps = new PaperSize(custom_page, m_width, m_height * m_lstBarcode.Count);
+            int width = ConvertMM2Inch(m_width);
+            int height = ConvertMM2Inch(m_height);
+            PaperSize ps = new PaperSize(custom_page, width, height * m_lstBarcode.Count);
             ps.RawKind = (int)PaperKind.Custom;
 
             PrintDialog printDlg = new PrintDialog();
@@ -293,7 +297,7 @@ namespace CSharpBarcode128
             foreach (BarcodeItem item in m_lstBarcode)
             {
                 e.Graphics.DrawImage(item.image, new Point(x, y));
-                y += m_height - 4;
+                y += ConvertMM2Inch(m_height);
             }
         }
 
@@ -357,7 +361,9 @@ namespace CSharpBarcode128
                 return;    
             }
 
-            PaperSize ps = new PaperSize(custom_page, m_width, m_height * m_lstBarcode.Count);
+            int width = ConvertMM2Inch(m_width);
+            int height = ConvertMM2Inch(m_height);
+            PaperSize ps = new PaperSize(custom_page, width, height * m_lstBarcode.Count);
             ps.RawKind = (int)PaperKind.Custom;
 
             PrintPreviewDialog printDlg = new PrintPreviewDialog();
@@ -368,6 +374,13 @@ namespace CSharpBarcode128
             printDlg.Document = printDoc;
             if (printDlg.ShowDialog() == DialogResult.OK)
                 printDoc.Print();
+        }
+
+        private int ConvertMM2Inch(int mm)
+        {
+            double value = mm * 0.0393701;
+            value = value * 100;
+            return Convert.ToInt32(value);
         }
     }
 
