@@ -20,8 +20,8 @@ namespace CSharpBarcode128
     public partial class mainFrm : Form
     {
         const string custom_page = "CustomPage";
-        const int custom_width = 150;
-        const int custom_height = 76;
+        //const int custom_width = 150;
+        //const int custom_height = 76;
 
         private MySQLDatabase m_db = null;
         private string m_server = null;
@@ -30,6 +30,10 @@ namespace CSharpBarcode128
         private string m_port = null;
         private List<BarcodeItem> m_lstBarcode = null;
         private string m_txtAN = null;
+        private int m_width;
+        private int m_height;
+        private int m_top;
+        private int m_left;
 
         public mainFrm()
         {
@@ -78,6 +82,8 @@ namespace CSharpBarcode128
 
         private bool ReloadConfig()
         {
+            // Clear data grid view.
+            dgView.Rows.Clear();
             // Load new config
             LoadFromXML();
             try
@@ -143,6 +149,36 @@ namespace CSharpBarcode128
                 if (port != null)
                 {
                     m_port = port.Value;
+                }
+            }
+
+            // Get printer
+            XmlNode printNode = xmlDoc.SelectSingleNode("//printer");
+            if (printNode != null)
+            {
+                XmlAttribute width = printNode.Attributes["width"];
+                XmlAttribute height = printNode.Attributes["height"];
+                XmlAttribute top = printNode.Attributes["top"];
+                XmlAttribute left = printNode.Attributes["left"];
+
+                if (width != null)
+                {
+                    m_width = Convert.ToInt32(width.Value);
+                }
+
+                if (height != null)
+                {
+                    m_height = Convert.ToInt32(height.Value);
+                }
+
+                if (top != null)
+                {
+                    m_top = Convert.ToInt32(top.Value);
+                }
+
+                if (left != null)
+                {
+                    m_left = Convert.ToInt32(left.Value);
                 }
             }
 
@@ -231,7 +267,13 @@ namespace CSharpBarcode128
 
         private void btnPrint_Click(object sender, EventArgs e)
         {
-            PaperSize ps = new PaperSize(custom_page, custom_width, custom_height * m_lstBarcode.Count);
+            if (dgView.Rows.Count == 0)
+            {
+                MessageBox.Show("There is no a barcode in data grid view.");
+                return;
+            }
+
+            PaperSize ps = new PaperSize(custom_page, m_width, m_height * m_lstBarcode.Count);
             ps.RawKind = (int)PaperKind.Custom;
 
             PrintDialog printDlg = new PrintDialog();
@@ -246,12 +288,12 @@ namespace CSharpBarcode128
 
         void printDoc_PrintPage(object sender, PrintPageEventArgs e)
         {
-            int x = 5;
-            int y = 2;
+            int x = m_left;
+            int y = m_top;
             foreach (BarcodeItem item in m_lstBarcode)
             {
                 e.Graphics.DrawImage(item.image, new Point(x, y));
-                y += 75;
+                y += m_height - 4;
             }
         }
 
@@ -309,7 +351,13 @@ namespace CSharpBarcode128
 
         private void btnPrintPreview_Click(object sender, EventArgs e)
         {
-            PaperSize ps = new PaperSize(custom_page, custom_width, custom_height * m_lstBarcode.Count);
+            if (dgView.Rows.Count == 0)
+            {
+                MessageBox.Show("There is no a barcode in data grid view.");
+                return;    
+            }
+
+            PaperSize ps = new PaperSize(custom_page, m_width, m_height * m_lstBarcode.Count);
             ps.RawKind = (int)PaperKind.Custom;
 
             PrintPreviewDialog printDlg = new PrintPreviewDialog();
@@ -317,10 +365,6 @@ namespace CSharpBarcode128
             printDoc.DocumentName = "Barcode";
             printDoc.PrintPage += new PrintPageEventHandler(printDoc_PrintPage);
             printDoc.DefaultPageSettings.PaperSize = ps;
-            printDoc.DefaultPageSettings.Margins.Top = 0;
-            printDoc.DefaultPageSettings.Margins.Left = 0;
-            printDoc.DefaultPageSettings.Margins.Right = 0;
-            printDoc.DefaultPageSettings.Margins.Bottom = 0;
             printDlg.Document = printDoc;
             if (printDlg.ShowDialog() == DialogResult.OK)
                 printDoc.Print();

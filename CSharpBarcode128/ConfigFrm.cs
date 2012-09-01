@@ -88,6 +88,36 @@ namespace CSharpBarcode128
                 }
             }
 
+            // Get printer
+            XmlNode printNode = xmlDoc.SelectSingleNode("//printer");
+            if (printNode != null)
+            {
+                XmlAttribute width = printNode.Attributes["width"];
+                XmlAttribute height = printNode.Attributes["height"];
+                XmlAttribute top = printNode.Attributes["top"];
+                XmlAttribute left = printNode.Attributes["left"];
+
+                if (width != null)
+                {
+                    txtWidth.Text = width.Value;
+                }
+
+                if (height != null)
+                {
+                    txtHeight.Text = height.Value;
+                }
+
+                if (top != null)
+                {
+                    txtTop.Text = top.Value;
+                }
+
+                if (left != null)
+                {
+                    txtLeft.Text = left.Value;
+                }
+            }
+
             // Get label
             XmlNodeList labels = xmlDoc.SelectNodes("//label");
             if (labels != null)
@@ -150,6 +180,24 @@ namespace CSharpBarcode128
                 xmlNodeLabels.AppendChild(xmlNodeLabel);
             }
 
+            // Create printer node
+            XmlNode xmlNodePrinter = xmlDoc.CreateNode(XmlNodeType.Element, "printer", "");
+            XmlAttribute xmlAttrPrintWidth = xmlDoc.CreateAttribute("width");
+            xmlAttrPrintWidth.Value = txtWidth.Text;
+            xmlNodePrinter.Attributes.Append(xmlAttrPrintWidth);
+            XmlAttribute xmlAttrPrintHeight = xmlDoc.CreateAttribute("height");
+            xmlAttrPrintHeight.Value = txtHeight.Text;
+            xmlNodePrinter.Attributes.Append(xmlAttrPrintHeight);
+            XmlAttribute xmlAttrPrintTop = xmlDoc.CreateAttribute("top");
+            xmlAttrPrintTop.Value = txtTop.Text;
+            xmlNodePrinter.Attributes.Append(xmlAttrPrintTop);
+            XmlAttribute xmlAttrPrintLeft = xmlDoc.CreateAttribute("left");
+            xmlAttrPrintLeft.Value = txtLeft.Text;
+            xmlNodePrinter.Attributes.Append(xmlAttrPrintLeft);
+            
+
+            // Append all nodes to root node
+            xmlNodeRoot.AppendChild(xmlNodePrinter);
             xmlNodeRoot.AppendChild(xmlNodeLabels);
             xmlNodeRoot.AppendChild(xmlNodeServer);
             xmlDoc.AppendChild(xmlNodeRoot);
@@ -205,6 +253,16 @@ namespace CSharpBarcode128
         private void dgView_SelectionChanged(object sender, EventArgs e)
         {
             txtLabel.Text = (string)dgView.CurrentRow.Cells[0].Value;
+        }
+
+        private void label12_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtLeft_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
