@@ -1,9 +1,8 @@
 <config>
+  <printer width="145" height="79" top="0" left="0" />
   <labels>
-    <label name="AAA" />
-    <label name="BBB" />
-    <label name="DER" />
-    <label name="UIY" />
+    <label name="PHY" />
+    <label name="DGF" />
   </labels>
   <server name="127.0.0.1" username="root" password="passwordroot" port="3306" />
 </config>
