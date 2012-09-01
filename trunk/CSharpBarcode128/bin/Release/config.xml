@@ -1,8 +1,10 @@
 <config>
-  <printer width="145" height="79" top="0" left="0" />
+  <printer width="50" height="20" top="0" left="0" />
   <labels>
-    <label name="PHY" />
-    <label name="DGF" />
+    <label name="FGT" />
+    <label name="AAA" />
+    <label name="WWW" />
+    <label name="WER" />
   </labels>
   <server name="127.0.0.1" username="root" password="passwordroot" port="3306" />
 </config>

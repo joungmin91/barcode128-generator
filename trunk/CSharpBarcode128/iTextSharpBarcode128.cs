@@ -18,7 +18,7 @@ namespace CSharpBarcode128
         public System.Drawing.Bitmap GetBarcodeBMPImage()
         {
             // Create image background, while color.
-            System.Drawing.Bitmap bgBuff = new Bitmap(175, 95);
+            System.Drawing.Bitmap bgBuff = new Bitmap(189, 75);
             if (bgBuff == null)
             {
                 return null;
@@ -42,30 +42,28 @@ namespace CSharpBarcode128
             }
 
             // Fill barcode image into background image.
-            grph.DrawImage(imgBarcode, 25, 30);
+            grph.DrawImage(imgBarcode, 12, 22);
 
-            // Draw data string below barcode
-            System.Drawing.StringFormat strFormat = new System.Drawing.StringFormat();
-            strFormat.LineAlignment = StringAlignment.Center;
-            strFormat.Alignment = StringAlignment.Center;
+            // New font.
+            System.Drawing.Font font = new System.Drawing.Font("Cordia New", 12, FontStyle.Regular);
+            System.Drawing.SolidBrush brush = new SolidBrush(Color.Black);
 
             // Draw string HN (Above)
             grph.DrawString(
                 CodeAbove,
-                new System.Drawing.Font(FontFactory.TIMES_ROMAN, 7, FontStyle.Regular),
-                new SolidBrush(Color.Black),
-                5,
-                10
+                font,
+                brush,
+                10,
+                3
                 );
 
             // Draw string AN + Section (Below)
             grph.DrawString(
                 Code,
-                new System.Drawing.Font(FontFactory.TIMES_ROMAN, 7, FontStyle.Regular),
-                new SolidBrush(Color.Black),
-                bgBuff.Width / 2,
-                bgBuff.Height - 15,
-                strFormat
+                font,
+                brush,
+                10,
+                bgBuff.Height - 30
                 );
 
             return bgBuff;
