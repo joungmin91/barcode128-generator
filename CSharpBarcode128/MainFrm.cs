@@ -28,12 +28,14 @@ namespace CSharpBarcode128
         private string m_username = null;
         private string m_password = null;
         private string m_port = null;
+        private string m_dbName = null;
         private List<BarcodeItem> m_lstBarcode = null;
         private string m_txtAN = null;
         private int m_width;
         private int m_height;
         private int m_top;
         private int m_left;
+        private int m_idxPrint = 0;
 
         public mainFrm()
         {
@@ -69,9 +71,9 @@ namespace CSharpBarcode128
                 m_db.DBServer = m_server;
                 m_db.DBUser = m_username;
                 m_db.DBPassword = m_password;
-                m_db.DBName = "hos";
+                m_db.DBName = m_dbName;
                 m_db.Connect();
-                m_db.SQLCommand = "USE hos;";
+                m_db.SQLCommand = "USE " + m_dbName + ";";
                 m_db.Query();
                 m_db.Result.Close();
             }
@@ -95,9 +97,9 @@ namespace CSharpBarcode128
                 m_db.DBServer = m_server;
                 m_db.DBUser = m_username;
                 m_db.DBPassword = m_password;
-                m_db.DBName = "hos";
+                m_db.DBName = m_dbName;
                 m_db.Connect();
-                m_db.SQLCommand = "USE hos;";
+                m_db.SQLCommand = "USE " + m_dbName + ";";
                 m_db.Query();
                 m_db.Result.Close();
             }
@@ -132,6 +134,7 @@ namespace CSharpBarcode128
                 XmlAttribute user = srvNode.Attributes["username"];
                 XmlAttribute pass = srvNode.Attributes["password"];
                 XmlAttribute port = srvNode.Attributes["port"];
+                XmlAttribute db = srvNode.Attributes["database"];
 
                 if (name != null)
                 {
@@ -151,6 +154,11 @@ namespace CSharpBarcode128
                 if (port != null)
                 {
                     m_port = port.Value;
+                }
+
+                if (db != null)
+                {
+                    m_dbName = db.Value;
                 }
             }
 
@@ -209,7 +217,7 @@ namespace CSharpBarcode128
             barcode.StartStopText = true;
             barcode.BarHeight = 25;
             barcode.Code = m_txtAN;
-            barcode.CodeAbove = "HN_" + txtHN.Text + "  " + txtFirstName.Text + " " + txtLastName.Text;
+            barcode.CodeAbove = "HN_" + txtHN.Text + " " + txtFirstName.Text + " " + txtLastName.Text;
             return barcode.GetBarcodeBMPImage();
         }
 
@@ -264,40 +272,6 @@ namespace CSharpBarcode128
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }
-        }
-
-        private void btnPrint_Click(object sender, EventArgs e)
-        {
-            if (dgView.Rows.Count == 0)
-            {
-                MessageBox.Show("There is no a barcode in data grid view.");
-                return;
-            }
-
-            int width = ConvertMM2Inch(m_width);
-            int height = ConvertMM2Inch(m_height);
-            PaperSize ps = new PaperSize(custom_page, width, height * m_lstBarcode.Count);
-            ps.RawKind = (int)PaperKind.Custom;
-
-            PrintDialog printDlg = new PrintDialog();
-            PrintDocument printDoc = new PrintDocument();
-            printDoc.DocumentName = "Barcode";
-            printDoc.PrintPage += new PrintPageEventHandler(printDoc_PrintPage);
-            printDoc.DefaultPageSettings.PaperSize = ps;
-            printDlg.Document = printDoc;
-            if (printDlg.ShowDialog() == DialogResult.OK)
-                printDoc.Print();
-        }
-
-        void printDoc_PrintPage(object sender, PrintPageEventArgs e)
-        {
-            int x = m_left;
-            int y = m_top;
-            foreach (BarcodeItem item in m_lstBarcode)
-            {
-                e.Graphics.DrawImage(item.image, new Point(x, y));
-                y += ConvertMM2Inch(m_height);
             }
         }
 
@@ -361,19 +335,45 @@ namespace CSharpBarcode128
                 return;    
             }
 
-            int width = ConvertMM2Inch(m_width);
-            int height = ConvertMM2Inch(m_height);
-            PaperSize ps = new PaperSize(custom_page, width, height * m_lstBarcode.Count);
-            ps.RawKind = (int)PaperKind.Custom;
-
             PrintPreviewDialog printDlg = new PrintPreviewDialog();
             PrintDocument printDoc = new PrintDocument();
             printDoc.DocumentName = "Barcode";
             printDoc.PrintPage += new PrintPageEventHandler(printDoc_PrintPage);
-            printDoc.DefaultPageSettings.PaperSize = ps;
             printDlg.Document = printDoc;
             if (printDlg.ShowDialog() == DialogResult.OK)
                 printDoc.Print();
+        }
+
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+            if (dgView.Rows.Count == 0)
+            {
+                MessageBox.Show("There is no a barcode in data grid view.");
+                return;
+            }
+
+            PrintDialog printDlg = new PrintDialog();
+            PrintDocument printDoc = new PrintDocument();
+            printDoc.DocumentName = "Barcode";
+            printDoc.PrintPage += new PrintPageEventHandler(printDoc_PrintPage);
+            printDlg.Document = printDoc;
+            if (printDlg.ShowDialog() == DialogResult.OK)
+                printDoc.Print();
+        }
+
+        void printDoc_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            e.Graphics.DrawImage(m_lstBarcode[m_idxPrint++].image, new Point(m_left, m_top));
+            // The last page?
+            if (m_idxPrint == m_lstBarcode.Count)
+            {
+                e.HasMorePages = false;
+                m_idxPrint = 0;
+            }
+            else
+            {
+                e.HasMorePages = true;
+            }
         }
 
         private int ConvertMM2Inch(int mm)

@@ -42,10 +42,10 @@ namespace CSharpBarcode128
             }
 
             // Fill barcode image into background image.
-            grph.DrawImage(imgBarcode, 12, 22);
+            grph.DrawImage(imgBarcode, 20, 25);
 
             // New font.
-            System.Drawing.Font font = new System.Drawing.Font("Cordia New", 12, FontStyle.Regular);
+            System.Drawing.Font font = new System.Drawing.Font("Cordia New", 11, FontStyle.Bold);
             System.Drawing.SolidBrush brush = new SolidBrush(Color.Black);
 
             // Draw string HN (Above)
@@ -53,7 +53,7 @@ namespace CSharpBarcode128
                 CodeAbove,
                 font,
                 brush,
-                10,
+                17,
                 3
                 );
 
@@ -62,8 +62,8 @@ namespace CSharpBarcode128
                 Code,
                 font,
                 brush,
-                10,
-                bgBuff.Height - 30
+                17,
+                bgBuff.Height - 25
                 );
 
             return bgBuff;
