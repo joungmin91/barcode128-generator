@@ -45,7 +45,7 @@ namespace CSharpBarcode128
             grph.DrawImage(imgBarcode, 20, 25);
 
             // New font.
-            System.Drawing.Font font = new System.Drawing.Font("Cordia New", 11, FontStyle.Bold);
+            System.Drawing.Font font = new System.Drawing.Font("Cordia New", 14, FontStyle.Bold);
             System.Drawing.SolidBrush brush = new SolidBrush(Color.Black);
 
             // Draw string HN (Above)
@@ -54,7 +54,7 @@ namespace CSharpBarcode128
                 font,
                 brush,
                 17,
-                3
+                0
                 );
 
             // Draw string AN + Section (Below)
@@ -109,7 +109,7 @@ namespace CSharpBarcode128
                 new System.Drawing.Font(FontFactory.TIMES_ROMAN, 7, FontStyle.Regular),
                 new SolidBrush(Color.Black),
                 5,
-                10
+                0
                 );
 
             // Draw string AN + Section (Below)
