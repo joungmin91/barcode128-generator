@@ -54,10 +54,10 @@ namespace CSharpBarcode128
                 font,
                 brush,
                 17,
-                0
+                2
                 );
 
-            // Draw string AN + Section (Below)
+            // Draw string AN + Section (Below)l
             grph.DrawString(
                 Code,
                 font,
