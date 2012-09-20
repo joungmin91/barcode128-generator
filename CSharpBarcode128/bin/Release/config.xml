@@ -1,6 +1,13 @@
 <config>
+  <tab default="OPD" />
   <labels>
     <label name="WER" />
+    <label name="TTT" />
+    <label name="DDD" />
+    <label name="WED" />
+    <label name="QSD" />
+    <label name="EDF" />
+    <label name="SXC" />
   </labels>
-  <server name="192.168.204.134" username="root" password="password" port="3306" database="hos" />
+  <server name="127.0.0.1" username="root" password="passwordroot" port="3306" database="hos" />
 </config>

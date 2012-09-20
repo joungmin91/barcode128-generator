@@ -38,6 +38,10 @@ namespace CSharpBarcode128
             dgView.Columns[0].HeaderText = "Barcode Label";
             dgView.Columns[0].Width = 280;
 
+            // Init combobox
+            cmbTab.Items.Add("IPD");
+            cmbTab.Items.Add("OPD");
+
             // Load XML.
             LoadFromXML();
         }
@@ -105,6 +109,17 @@ namespace CSharpBarcode128
                 }
             }
 
+            // Get tab
+            XmlNode tab = xmlDoc.SelectSingleNode("//tab");
+            if (tab != null)
+            {
+                XmlAttribute defTab = tab.Attributes["default"];
+                if (defTab != null)
+                {
+                    cmbTab.Text = defTab.Value;
+                }
+            }
+
             return true;
         }
 
@@ -159,7 +174,14 @@ namespace CSharpBarcode128
                 xmlNodeLabels.AppendChild(xmlNodeLabel);
             }
 
+            // Create tab node
+            XmlNode xmlNodeTab = xmlDoc.CreateNode(XmlNodeType.Element, "tab", "");
+            XmlAttribute xmlAttrTab = xmlDoc.CreateAttribute("default");
+            xmlAttrTab.Value = cmbTab.Text;
+            xmlNodeTab.Attributes.Append(xmlAttrTab);
+
             // Append all nodes to root node
+            xmlNodeRoot.AppendChild(xmlNodeTab);
             xmlNodeRoot.AppendChild(xmlNodeLabels);
             xmlNodeRoot.AppendChild(xmlNodeServer);
             xmlDoc.AppendChild(xmlNodeRoot);
