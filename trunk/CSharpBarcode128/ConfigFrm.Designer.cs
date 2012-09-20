@@ -49,6 +49,9 @@
             this.btnOK = new System.Windows.Forms.Button();
             this.txtDB = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.cmbTab = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -67,10 +70,10 @@
             // txtServer
             // 
             this.txtServer.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
-            this.txtServer.Location = new System.Drawing.Point(91, 30);
+            this.txtServer.Location = new System.Drawing.Point(99, 30);
             this.txtServer.Margin = new System.Windows.Forms.Padding(2);
             this.txtServer.Name = "txtServer";
-            this.txtServer.Size = new System.Drawing.Size(177, 23);
+            this.txtServer.Size = new System.Drawing.Size(169, 23);
             this.txtServer.TabIndex = 20;
             // 
             // label1
@@ -87,10 +90,10 @@
             // txtUsername
             // 
             this.txtUsername.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
-            this.txtUsername.Location = new System.Drawing.Point(91, 57);
+            this.txtUsername.Location = new System.Drawing.Point(99, 57);
             this.txtUsername.Margin = new System.Windows.Forms.Padding(2);
             this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(177, 23);
+            this.txtUsername.Size = new System.Drawing.Size(169, 23);
             this.txtUsername.TabIndex = 22;
             // 
             // label2
@@ -107,10 +110,10 @@
             // txtPassword
             // 
             this.txtPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
-            this.txtPassword.Location = new System.Drawing.Point(91, 84);
+            this.txtPassword.Location = new System.Drawing.Point(99, 84);
             this.txtPassword.Margin = new System.Windows.Forms.Padding(2);
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(177, 23);
+            this.txtPassword.Size = new System.Drawing.Size(169, 23);
             this.txtPassword.TabIndex = 24;
             // 
             // label3
@@ -127,10 +130,10 @@
             // txtPort
             // 
             this.txtPort.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
-            this.txtPort.Location = new System.Drawing.Point(91, 110);
+            this.txtPort.Location = new System.Drawing.Point(99, 110);
             this.txtPort.Margin = new System.Windows.Forms.Padding(2);
             this.txtPort.Name = "txtPort";
-            this.txtPort.Size = new System.Drawing.Size(177, 23);
+            this.txtPort.Size = new System.Drawing.Size(169, 23);
             this.txtPort.TabIndex = 26;
             this.txtPort.Text = "3306";
             // 
@@ -150,7 +153,7 @@
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.label5.Location = new System.Drawing.Point(11, 188);
+            this.label5.Location = new System.Drawing.Point(11, 239);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(160, 20);
@@ -160,7 +163,7 @@
             // txtLabel
             // 
             this.txtLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
-            this.txtLabel.Location = new System.Drawing.Point(91, 211);
+            this.txtLabel.Location = new System.Drawing.Point(91, 262);
             this.txtLabel.Margin = new System.Windows.Forms.Padding(2);
             this.txtLabel.Name = "txtLabel";
             this.txtLabel.Size = new System.Drawing.Size(94, 23);
@@ -170,7 +173,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
-            this.label7.Location = new System.Drawing.Point(12, 212);
+            this.label7.Location = new System.Drawing.Point(12, 263);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(84, 17);
@@ -180,7 +183,7 @@
             // dgView
             // 
             this.dgView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgView.Location = new System.Drawing.Point(15, 238);
+            this.dgView.Location = new System.Drawing.Point(15, 289);
             this.dgView.Margin = new System.Windows.Forms.Padding(2);
             this.dgView.Name = "dgView";
             this.dgView.RowTemplate.Height = 24;
@@ -192,7 +195,7 @@
             // 
             this.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEdit.Image = ((System.Drawing.Image)(resources.GetObject("btnEdit.Image")));
-            this.btnEdit.Location = new System.Drawing.Point(216, 212);
+            this.btnEdit.Location = new System.Drawing.Point(216, 263);
             this.btnEdit.Margin = new System.Windows.Forms.Padding(2);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(23, 21);
@@ -204,7 +207,7 @@
             // 
             this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
-            this.btnDelete.Location = new System.Drawing.Point(244, 212);
+            this.btnDelete.Location = new System.Drawing.Point(244, 263);
             this.btnDelete.Margin = new System.Windows.Forms.Padding(2);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(23, 21);
@@ -216,7 +219,7 @@
             // 
             this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAdd.Image = ((System.Drawing.Image)(resources.GetObject("btnAdd.Image")));
-            this.btnAdd.Location = new System.Drawing.Point(188, 212);
+            this.btnAdd.Location = new System.Drawing.Point(188, 263);
             this.btnAdd.Margin = new System.Windows.Forms.Padding(2);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(23, 21);
@@ -227,7 +230,7 @@
             // btnCancel
             // 
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancel.Location = new System.Drawing.Point(205, 391);
+            this.btnCancel.Location = new System.Drawing.Point(205, 442);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(62, 21);
@@ -239,7 +242,7 @@
             // btnOK
             // 
             this.btnOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnOK.Location = new System.Drawing.Point(139, 391);
+            this.btnOK.Location = new System.Drawing.Point(139, 442);
             this.btnOK.Margin = new System.Windows.Forms.Padding(2);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(62, 21);
@@ -251,10 +254,10 @@
             // txtDB
             // 
             this.txtDB.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
-            this.txtDB.Location = new System.Drawing.Point(91, 137);
+            this.txtDB.Location = new System.Drawing.Point(99, 137);
             this.txtDB.Margin = new System.Windows.Forms.Padding(2);
             this.txtDB.Name = "txtDB";
-            this.txtDB.Size = new System.Drawing.Size(177, 23);
+            this.txtDB.Size = new System.Drawing.Size(169, 23);
             this.txtDB.TabIndex = 37;
             // 
             // label8
@@ -268,11 +271,46 @@
             this.label8.TabIndex = 36;
             this.label8.Text = "Database";
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.label9.Location = new System.Drawing.Point(11, 172);
+            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(102, 20);
+            this.label9.TabIndex = 38;
+            this.label9.Text = "Tab Setting";
+            // 
+            // cmbTab
+            // 
+            this.cmbTab.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.cmbTab.FormattingEnabled = true;
+            this.cmbTab.Location = new System.Drawing.Point(99, 198);
+            this.cmbTab.Name = "cmbTab";
+            this.cmbTab.Size = new System.Drawing.Size(168, 24);
+            this.cmbTab.TabIndex = 39;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(222)));
+            this.label10.Location = new System.Drawing.Point(12, 200);
+            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(82, 17);
+            this.label10.TabIndex = 40;
+            this.label10.Text = "Default Tab";
+            // 
             // ConfigFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(288, 426);
+            this.ClientSize = new System.Drawing.Size(283, 488);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.cmbTab);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.txtDB);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.btnOK);
@@ -294,6 +332,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label6);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ConfigFrm";
             this.Text = "Configuration";
@@ -326,5 +365,8 @@
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.TextBox txtDB;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox cmbTab;
+        private System.Windows.Forms.Label label10;
     }
 }
