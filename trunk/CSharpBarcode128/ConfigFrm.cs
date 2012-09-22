@@ -32,12 +32,14 @@ namespace CSharpBarcode128
 
             // Init datagrid view.
             dgView.AllowUserToAddRows = false;
+            dgView.SelectionChanged += new EventHandler(dgView_SelectionChanged);
             dgView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgView.ColumnCount = 1;
             dgView.Columns[0].HeaderText = "Barcode Label";
             dgView.Columns[0].Width = 280;
 
             dgViewOPD.AllowUserToAddRows = false;
+            dgViewOPD.SelectionChanged += new EventHandler(dgViewOPD_SelectionChanged);
             dgViewOPD.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgViewOPD.ColumnCount = 1;
             dgViewOPD.Columns[0].HeaderText = "Barcode Label";
@@ -49,6 +51,14 @@ namespace CSharpBarcode128
 
             // Load XML.
             LoadFromXML();
+        }
+
+        void dgViewOPD_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgViewOPD.Rows.Count > 0)
+            {
+                txtLabel.Text = (string)dgViewOPD.CurrentRow.Cells[0].Value;
+            }
         }
 
         private bool LoadFromXML()
@@ -271,10 +281,22 @@ namespace CSharpBarcode128
         {
             if (tabControl.TabPages[tabControl.SelectedIndex].Text == "IPD")
             {
+                if (dgView.Rows.Count == 0)
+                {
+                    MessageBox.Show("No rows to be deleted.");
+                    return;
+                }
+
                 dgView.Rows.Remove(dgView.CurrentRow);
             }
             else
             {
+                if (dgViewOPD.Rows.Count == 0)
+                {
+                    MessageBox.Show("No rows to be deleted.");
+                    return;
+                }
+
                 dgViewOPD.Rows.Remove(dgViewOPD.CurrentRow);
             }
         }
@@ -293,17 +315,10 @@ namespace CSharpBarcode128
 
         private void dgView_SelectionChanged(object sender, EventArgs e)
         {
-            txtLabel.Text = (string)dgView.CurrentRow.Cells[0].Value;
-        }
-
-        private void label12_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtLeft_TextChanged(object sender, EventArgs e)
-        {
-
+            if (dgView.Rows.Count > 0)
+            {
+                txtLabel.Text = (string)dgView.CurrentRow.Cells[0].Value;
+            }
         }
     }
 }
