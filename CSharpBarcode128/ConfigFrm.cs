@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
@@ -37,6 +36,12 @@ namespace CSharpBarcode128
             dgView.ColumnCount = 1;
             dgView.Columns[0].HeaderText = "Barcode Label";
             dgView.Columns[0].Width = 280;
+
+            dgViewOPD.AllowUserToAddRows = false;
+            dgViewOPD.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgViewOPD.ColumnCount = 1;
+            dgViewOPD.Columns[0].HeaderText = "Barcode Label";
+            dgViewOPD.Columns[0].Width = 280;
 
             // Init combobox
             cmbTab.Items.Add("IPD");
@@ -99,13 +104,24 @@ namespace CSharpBarcode128
             }
 
             // Get label
-            XmlNodeList labels = xmlDoc.SelectNodes("//label");
+            XmlNodeList labels = xmlDoc.SelectNodes("//labels[@type='IPD']/label");
             if (labels != null)
             {
                 foreach (XmlNode item in labels)
                 {
                     string value = item.Attributes["name"].Value;
                     dgView.Rows.Add(value);
+                }
+            }
+
+            // Get label
+            XmlNodeList labelsOPD = xmlDoc.SelectNodes("//labels[@type='OPD']/label");
+            if (labelsOPD != null)
+            {
+                foreach (XmlNode item in labelsOPD)
+                {
+                    string value = item.Attributes["name"].Value;
+                    dgViewOPD.Rows.Add(value);
                 }
             }
 
@@ -163,6 +179,9 @@ namespace CSharpBarcode128
 
             // Create labels node
             XmlNode xmlNodeLabels = xmlDoc.CreateNode(XmlNodeType.Element, "labels", "");
+            XmlAttribute xmlAttrType = xmlDoc.CreateAttribute("type");
+            xmlAttrType.Value = "IPD";
+            xmlNodeLabels.Attributes.Append(xmlAttrType);
 
             foreach (DataGridViewRow item in dgView.Rows)
             {
@@ -174,6 +193,22 @@ namespace CSharpBarcode128
                 xmlNodeLabels.AppendChild(xmlNodeLabel);
             }
 
+            // Create labels node
+            XmlNode xmlNodeLabelsOPD = xmlDoc.CreateNode(XmlNodeType.Element, "labels", "");
+            XmlAttribute xmlAttrTypeOPD = xmlDoc.CreateAttribute("type");
+            xmlAttrTypeOPD.Value = "OPD";
+            xmlNodeLabelsOPD.Attributes.Append(xmlAttrTypeOPD);
+
+            foreach (DataGridViewRow item in dgViewOPD.Rows)
+            {
+                // Create label node
+                XmlNode xmlNodeLabel = xmlDoc.CreateNode(XmlNodeType.Element, "label", "");
+                XmlAttribute xmlAttrName = xmlDoc.CreateAttribute("name");
+                xmlAttrName.Value = (string)item.Cells[0].Value;
+                xmlNodeLabel.Attributes.Append(xmlAttrName);
+                xmlNodeLabelsOPD.AppendChild(xmlNodeLabel);
+            }
+
             // Create tab node
             XmlNode xmlNodeTab = xmlDoc.CreateNode(XmlNodeType.Element, "tab", "");
             XmlAttribute xmlAttrTab = xmlDoc.CreateAttribute("default");
@@ -183,6 +218,7 @@ namespace CSharpBarcode128
             // Append all nodes to root node
             xmlNodeRoot.AppendChild(xmlNodeTab);
             xmlNodeRoot.AppendChild(xmlNodeLabels);
+            xmlNodeRoot.AppendChild(xmlNodeLabelsOPD);
             xmlNodeRoot.AppendChild(xmlNodeServer);
             xmlDoc.AppendChild(xmlNodeRoot);
             xmlDoc.Save(@"config.xml");
@@ -219,19 +255,40 @@ namespace CSharpBarcode128
                 return;
             }
 
-            dgView.Rows.Add(txtLabel.Text);
+            if (tabControl.TabPages[tabControl.SelectedIndex].Text == "IPD")
+            {
+                dgView.Rows.Add(txtLabel.Text);
+            }
+            else
+            {
+                dgViewOPD.Rows.Add(txtLabel.Text);
+            }
 
             txtLabel.Text = "";
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            dgView.Rows.Remove(dgView.CurrentRow);
+            if (tabControl.TabPages[tabControl.SelectedIndex].Text == "IPD")
+            {
+                dgView.Rows.Remove(dgView.CurrentRow);
+            }
+            else
+            {
+                dgViewOPD.Rows.Remove(dgViewOPD.CurrentRow);
+            }
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            dgView.CurrentRow.Cells[0].Value = txtLabel.Text;
+            if (tabControl.TabPages[tabControl.SelectedIndex].Text == "IPD")
+            {
+                dgView.CurrentRow.Cells[0].Value = txtLabel.Text;
+            }
+            else
+            {
+                dgViewOPD.CurrentRow.Cells[0].Value = txtLabel.Text;
+            }
         }
 
         private void dgView_SelectionChanged(object sender, EventArgs e)

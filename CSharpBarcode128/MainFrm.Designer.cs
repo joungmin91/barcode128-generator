@@ -359,9 +359,9 @@
             this.chkBlankOPD.AutoSize = true;
             this.chkBlankOPD.Location = new System.Drawing.Point(275, 122);
             this.chkBlankOPD.Name = "chkBlankOPD";
-            this.chkBlankOPD.Size = new System.Drawing.Size(146, 17);
+            this.chkBlankOPD.Size = new System.Drawing.Size(153, 17);
             this.chkBlankOPD.TabIndex = 34;
-            this.chkBlankOPD.Text = "I want to print blank page";
+            this.chkBlankOPD.Text = "I want to print without tags.";
             this.chkBlankOPD.UseVisualStyleBackColor = true;
             // 
             // label12
@@ -443,9 +443,9 @@
             this.label10.Location = new System.Drawing.Point(16, 84);
             this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(60, 17);
+            this.label10.Size = new System.Drawing.Size(38, 17);
             this.label10.TabIndex = 26;
-            this.label10.Text = "VS Date";
+            this.label10.Text = "Date";
             // 
             // label8
             // 
