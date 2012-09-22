@@ -52,7 +52,15 @@
             this.label9 = new System.Windows.Forms.Label();
             this.cmbTab = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
+            this.tabControl = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.dgViewOPD = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dgView)).BeginInit();
+            this.tabControl.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgViewOPD)).BeginInit();
             this.SuspendLayout();
             // 
             // label6
@@ -113,6 +121,7 @@
             this.txtPassword.Location = new System.Drawing.Point(99, 84);
             this.txtPassword.Margin = new System.Windows.Forms.Padding(2);
             this.txtPassword.Name = "txtPassword";
+            this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(169, 23);
             this.txtPassword.TabIndex = 24;
             // 
@@ -183,11 +192,11 @@
             // dgView
             // 
             this.dgView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgView.Location = new System.Drawing.Point(15, 289);
+            this.dgView.Location = new System.Drawing.Point(5, 5);
             this.dgView.Margin = new System.Windows.Forms.Padding(2);
             this.dgView.Name = "dgView";
             this.dgView.RowTemplate.Height = 24;
-            this.dgView.Size = new System.Drawing.Size(252, 136);
+            this.dgView.Size = new System.Drawing.Size(235, 150);
             this.dgView.TabIndex = 30;
             this.dgView.SelectionChanged += new System.EventHandler(this.dgView_SelectionChanged);
             // 
@@ -230,7 +239,7 @@
             // btnCancel
             // 
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancel.Location = new System.Drawing.Point(205, 442);
+            this.btnCancel.Location = new System.Drawing.Point(206, 490);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(62, 21);
@@ -242,7 +251,7 @@
             // btnOK
             // 
             this.btnOK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnOK.Location = new System.Drawing.Point(139, 442);
+            this.btnOK.Location = new System.Drawing.Point(140, 490);
             this.btnOK.Margin = new System.Windows.Forms.Padding(2);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(62, 21);
@@ -303,11 +312,54 @@
             this.label10.TabIndex = 40;
             this.label10.Text = "Default Tab";
             // 
+            // tabControl
+            // 
+            this.tabControl.Controls.Add(this.tabPage1);
+            this.tabControl.Controls.Add(this.tabPage2);
+            this.tabControl.Location = new System.Drawing.Point(15, 299);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(253, 186);
+            this.tabControl.TabIndex = 41;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.dgView);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(245, 160);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "IPD";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.dgViewOPD);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(245, 160);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "OPD";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // dgViewOPD
+            // 
+            this.dgViewOPD.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgViewOPD.Location = new System.Drawing.Point(5, 5);
+            this.dgViewOPD.Margin = new System.Windows.Forms.Padding(2);
+            this.dgViewOPD.Name = "dgViewOPD";
+            this.dgViewOPD.RowTemplate.Height = 24;
+            this.dgViewOPD.Size = new System.Drawing.Size(235, 150);
+            this.dgViewOPD.TabIndex = 31;
+            // 
             // ConfigFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(283, 488);
+            this.ClientSize = new System.Drawing.Size(285, 523);
+            this.Controls.Add(this.tabControl);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.cmbTab);
             this.Controls.Add(this.label9);
@@ -318,7 +370,6 @@
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnEdit);
-            this.Controls.Add(this.dgView);
             this.Controls.Add(this.txtLabel);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label5);
@@ -338,6 +389,10 @@
             this.Text = "Configuration";
             this.Load += new System.EventHandler(this.ConfigFrm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgView)).EndInit();
+            this.tabControl.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgViewOPD)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -368,5 +423,9 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox cmbTab;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.DataGridView dgViewOPD;
     }
 }

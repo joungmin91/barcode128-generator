@@ -25,7 +25,8 @@ namespace CSharpBarcode128
         private string m_password = null;
         private string m_port = null;
         private string m_dbName = null;
-        private List<BarcodeItem> m_lstBarcode = null;
+        private List<BarcodeItem> m_lstBarcode = null;      // IPD
+        private List<BarcodeItem> m_lstBarcodeOPD = null;   // OPD
         private List<BarcodeItem> m_lstBarCodePrint = null;
         private Dictionary<string, OVST> m_map = null;
         private int m_width;
@@ -86,6 +87,7 @@ namespace CSharpBarcode128
 
             // Init list
             m_lstBarcode = new List<BarcodeItem>();
+            m_lstBarcodeOPD = new List<BarcodeItem>();
             m_lstBarCodePrint = new List<BarcodeItem>();
 
             // Init map
@@ -145,7 +147,7 @@ namespace CSharpBarcode128
             }
 
             string key = (string)dgViewOPD.CurrentRow.Cells[2].Value;
-            BarcodeItem item = FindItemInList(key);
+            BarcodeItem item = FindItemInList(key, m_lstBarcodeOPD);
             if (item != null)
             {
                 pictureBoxOPD.Image = item.image;
@@ -185,7 +187,7 @@ namespace CSharpBarcode128
 
             // Fill VN + Label in data grid view
             dgViewOPD.Rows.Clear();
-            foreach (BarcodeItem item in m_lstBarcode)
+            foreach (BarcodeItem item in m_lstBarcodeOPD)
             {
                 string VN = txtVNOPD.Text + item.name;
                 item.image = GenBarcodeByiText("HN_", m_map[cmbVSDateOPD.Text].hn, m_map[cmbVSDateOPD.Text].fname, m_map[cmbVSDateOPD.Text].lname, VN);
@@ -303,7 +305,7 @@ namespace CSharpBarcode128
             }
 
             // Get label
-            XmlNodeList labels = xmlDoc.SelectNodes("//label");
+            XmlNodeList labels = xmlDoc.SelectNodes("//labels[@type='IPD']/label");
             if (labels != null)
             {
                 m_lstBarcode.Clear();
@@ -311,6 +313,17 @@ namespace CSharpBarcode128
                 {
                     string value = item.Attributes["name"].Value;
                     m_lstBarcode.Add(new BarcodeItem { name=value, image=null});
+                }
+            }
+
+            XmlNodeList labelsOPD = xmlDoc.SelectNodes("//labels[@type='OPD']/label");
+            if (labels != null)
+            {
+                m_lstBarcodeOPD.Clear();
+                foreach (XmlNode item in labelsOPD)
+                {
+                    string value = item.Attributes["name"].Value;
+                    m_lstBarcodeOPD.Add(new BarcodeItem { name = value, image = null });
                 }
             }
 
@@ -444,16 +457,16 @@ namespace CSharpBarcode128
             }
 
             string key = ((string)dgView.CurrentRow.Cells[0].Value).Substring(7, 3);
-            BarcodeItem item = FindItemInList(key);
+            BarcodeItem item = FindItemInList(key, m_lstBarcode);
             if (item != null)
             {
                 pictureBox.Image = item.image;
             }
         }
 
-        private BarcodeItem FindItemInList(string key)
+        private BarcodeItem FindItemInList(string key, List<BarcodeItem> lstBarcode)
         {
-            foreach (BarcodeItem item in m_lstBarcode)
+            foreach (BarcodeItem item in lstBarcode)
             {
                 if (item.name == key)
                 {
@@ -643,7 +656,7 @@ namespace CSharpBarcode128
                 {
                     if ((bool)item.Cells[0].Value == true)
                     {
-                        BarcodeItem barcode = FindItemInList((string)item.Cells[2].Value);
+                        BarcodeItem barcode = FindItemInList((string)item.Cells[2].Value, m_lstBarcodeOPD);
                         m_lstBarCodePrint.Add(barcode);
                     }
                 }
@@ -651,7 +664,7 @@ namespace CSharpBarcode128
             else
             {
                 System.Drawing.Image img = GenBarcodeByiText("HN_", m_map[cmbVSDateOPD.Text].hn, m_map[cmbVSDateOPD.Text].fname, m_map[cmbVSDateOPD.Text].lname, txtVNOPD.Text);
-                m_lstBarCodePrint.Add(new BarcodeItem{ name="", image=img });
+                m_lstBarCodePrint.Add(new BarcodeItem { name = "", image = img });
             }
             
 
@@ -687,7 +700,7 @@ namespace CSharpBarcode128
                 {
                     if ((bool)item.Cells[0].Value == true)
                     {
-                        BarcodeItem barcode = FindItemInList((string)item.Cells[2].Value);
+                        BarcodeItem barcode = FindItemInList((string)item.Cells[2].Value, m_lstBarcodeOPD);
                         m_lstBarCodePrint.Add(barcode);
                     }
                 }
