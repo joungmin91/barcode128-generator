@@ -1,5 +1,5 @@
 <config>
-  <tab default="OPD" />
+  <tab default="IPD" />
   <labels type="IPD">
     <label name="ASD" />
     <label name="WER" />
@@ -8,5 +8,5 @@
     <label name="QSW" />
     <label name="CVB" />
   </labels>
-  <server name="127.0.0.1" username="root" password="password" port="3306" database="hos" />
+  <server name="127.0.0.1" username="root" password="passwordroot" port="3306" database="hos" />
 </config>

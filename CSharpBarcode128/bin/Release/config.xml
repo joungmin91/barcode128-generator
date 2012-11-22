@@ -1,5 +1,5 @@
 <config>
-  <tab default="OPD" />
+  <tab default="IPD" />
   <labels type="IPD">
     <label name="ASD" />
     <label name="WER" />
