@@ -35,6 +35,8 @@ namespace CSharpBarcode128
         private int m_left;
         private int m_idxPrint = 0;
         private Color m_dgvColor;
+        private long m_AN = 0;
+        private long m_HNOPD = 0;
 
         public mainFrm()
         {
@@ -43,6 +45,8 @@ namespace CSharpBarcode128
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.FormClosed +=new FormClosedEventHandler(mainFrm_FormClosed);
+
             // Init controls
             txtHN.Enabled = false;
             txtFirstName.Enabled = false;
@@ -100,6 +104,40 @@ namespace CSharpBarcode128
 
             // Load config
             LoadFromXML();
+
+            // Load previous data before closing form.
+            if (File.Exists("savedata.txt") == true)
+            {
+                StreamReader sr = new StreamReader("savedata.txt");
+                string line = sr.ReadLine();
+                if (line != null)
+                {
+                    txtAN.Text = line.Substring(3);    
+                }
+                line = sr.ReadLine();
+                if (line != null)
+                {
+                    txtHNOPD.Text = line.Substring(3);   
+                }
+                if (txtAN.Text != "")
+                {
+                    m_AN = Convert.ToInt32(txtAN.Text);   
+                }
+                if (txtHNOPD.Text != "")
+                {
+                    m_HNOPD = Convert.ToInt32(txtHNOPD.Text);   
+                }
+                sr.Close();
+            }
+
+            if (tabControl.SelectedTab.Name == "tabPageIPD")
+            {
+                txtAN.Select();
+            }
+            else
+            {
+                txtHNOPD.Select();
+            }
 
             try
             {
@@ -430,6 +468,25 @@ namespace CSharpBarcode128
             {
                 m_db.Close();
             }
+
+            StreamWriter sw = new StreamWriter("savedata.txt");
+            if (txtAN.Text != "" && (Convert.ToInt32(txtAN.Text) > m_AN))
+            {
+                sw.WriteLine("AN:" + txtAN.Text);
+            }
+            else
+            {
+                sw.WriteLine("AN:" + m_AN.ToString());
+            }
+            if (txtHNOPD.Text != "" && (Convert.ToInt32(txtHNOPD.Text) > m_HNOPD))
+            {
+                sw.WriteLine("HN:" + txtHNOPD.Text);
+            }
+            else
+            {
+                sw.WriteLine("HN:" + m_HNOPD.ToString());
+            }
+            sw.Close();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
