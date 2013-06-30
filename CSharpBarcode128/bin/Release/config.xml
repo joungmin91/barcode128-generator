@@ -8,5 +8,5 @@
     <label name="QSW" />
     <label name="CVB" />
   </labels>
-  <server name="127.0.0.1" username="root" password="passwordroot" port="3306" database="hos" />
+  <server name="127.0.0.1" username="root" password="" port="3306" database="hos_patient" />
 </config>

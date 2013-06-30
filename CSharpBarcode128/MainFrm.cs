@@ -25,10 +25,11 @@ namespace CSharpBarcode128
         private string m_password = null;
         private string m_port = null;
         private string m_dbName = null;
-        private List<BarcodeItem> m_lstBarcode = null;      // IPD
-        private List<BarcodeItem> m_lstBarcodeOPD = null;   // OPD
-        private List<BarcodeItem> m_lstBarCodePrint = null;
-        private Dictionary<string, OVST> m_map = null;
+        private List<BarcodeItem> m_lstBarcode = new List<BarcodeItem>();      // IPD
+        private List<BarcodeItem> m_lstBarcodeOPD = new List<BarcodeItem>();   // OPD
+        private List<BarcodeItem> m_lstBarCodePrint = new List<BarcodeItem>();
+        private Dictionary<string, OVST> m_map = new Dictionary<string,OVST>();
+        private List<string> m_printedRecords = new List<string>();
         private int m_width;
         private int m_height;
         private int m_top;
@@ -89,14 +90,6 @@ namespace CSharpBarcode128
             txtCol2.Visible = false;
             dgViewOPD.Columns.Insert(2, txtCol2);
 
-            // Init list
-            m_lstBarcode = new List<BarcodeItem>();
-            m_lstBarcodeOPD = new List<BarcodeItem>();
-            m_lstBarCodePrint = new List<BarcodeItem>();
-
-            // Init map
-            m_map = new Dictionary<string, OVST>();
-
             // Init controls
             cmbVSDateOPD.SelectedIndexChanged += new EventHandler(cmbVSDateOPD_SelectedIndexChanged);
             chkBlankOPD.CheckedChanged += new EventHandler(chkBlankOPD_CheckedChanged);
@@ -130,6 +123,9 @@ namespace CSharpBarcode128
                 sr.Close();
             }
 
+            // Load history printing.
+            ReloadHistory();
+
             if (tabControl.SelectedTab.Name == "tabPageIPD")
             {
                 txtAN.Select();
@@ -155,6 +151,33 @@ namespace CSharpBarcode128
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+        }
+
+        void ReloadHistory()
+        {
+            if (File.Exists("history.txt"))
+            {
+                var fileInfo = new FileInfo("history.txt");
+                long check = 1 * (1024 * 1024 * 1024);  // 1 GB
+                if (fileInfo.Length > check)
+                {
+                    string newfile = "history_" + DateTime.Now.ToString("ddMMyy_hhmmss") + ".txt";
+                    File.Move("history.txt", newfile);
+                }   
+            }
+
+            m_printedRecords.Clear();
+
+            var files = new DirectoryInfo(".").GetFiles("history*.*");
+            foreach (var item in files)
+            {
+                var history = new StreamReader(item.Name);
+                while (!history.EndOfStream)
+                {
+                    m_printedRecords.Add(history.ReadLine());
+                }
+                history.Close(); 
             }
         }
 
@@ -569,6 +592,7 @@ namespace CSharpBarcode128
 
         void printDoc_PrintPage(object sender, PrintPageEventArgs e)
         {
+            // IPD
             if (tabControl.TabPages[tabControl.SelectedIndex].Text == "IPD")
             {
                 e.Graphics.DrawImage(m_lstBarcode[m_idxPrint++].image, new Point(m_left, m_top));
@@ -583,20 +607,39 @@ namespace CSharpBarcode128
                     e.HasMorePages = true;
                 }
             }
+            // OPD
             else
             {
-                e.Graphics.DrawImage(m_lstBarCodePrint[m_idxPrint++].image, new Point(m_left, m_top));
+                BarcodeItem item = m_lstBarCodePrint[m_idxPrint++];
+                e.Graphics.DrawImage(item.image, new Point(m_left, m_top));
                 // The last page?
                 if (m_idxPrint == m_lstBarCodePrint.Count)
                 {
                     e.HasMorePages = false;
-                    m_idxPrint = 0;
                 }
                 else
                 {
                     e.HasMorePages = true;
                 }
+                // Update history printing.
+                if (item.printed == false)
+                {
+                    UpdateOPDHistory(item.key);
+                }
+
+                if (m_idxPrint == m_lstBarCodePrint.Count)
+                {
+                    m_idxPrint = 0;
+                    ReloadHistory();
+                }
             }
+        }
+
+        private void UpdateOPDHistory(string key)
+        {
+            var sw = new StreamWriter("history.txt", true);
+            sw.WriteLine(key);
+            sw.Close();
         }
 
         private int ConvertMM2Inch(int mm)
@@ -758,7 +801,27 @@ namespace CSharpBarcode128
                     if ((bool)item.Cells[0].Value == true)
                     {
                         BarcodeItem barcode = FindItemInList((string)item.Cells[2].Value, m_lstBarcodeOPD);
-                        m_lstBarCodePrint.Add(barcode);
+                        barcode.key = item.Cells[1].Value.ToString();
+                        barcode.printed = false;
+
+                        bool ignore = false;
+                        foreach (string key in m_printedRecords)
+                        {
+                            if (barcode.key == key)
+                            {
+                                barcode.printed = true;
+                                if (MessageBox.Show(barcode.key + " is already printed. Do you want to continue?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.No)
+                                {
+                                    ignore = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (ignore == false)
+                        {
+                            m_lstBarCodePrint.Add(barcode);   
+                        }
                     }
                 }
             }
@@ -771,7 +834,7 @@ namespace CSharpBarcode128
             // Check at least an item to print
             if (m_lstBarCodePrint.Count == 0)
             {
-                MessageBox.Show("There is no selected items.");
+                MessageBox.Show("There are no items to be printed.");
                 return;
             }
 
@@ -781,13 +844,17 @@ namespace CSharpBarcode128
             printDoc.PrintPage += new PrintPageEventHandler(printDoc_PrintPage);
             printDlg.Document = printDoc;
             if (printDlg.ShowDialog() == DialogResult.OK)
+            {
                 printDoc.Print();
+            }
         }
     }
 
     public class BarcodeItem
     {
+        public string key;
         public string name;
+        public bool printed;
         public System.Drawing.Image image;
     }
 
