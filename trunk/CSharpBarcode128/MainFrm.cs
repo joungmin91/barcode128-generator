@@ -60,15 +60,13 @@ namespace CSharpBarcode128
             dgView.AllowUserToAddRows = false;
             dgView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgView.MultiSelect = false;
-            dgView.ReadOnly = true;
             dgView.ColumnCount = 1;
             dgView.Columns[0].HeaderText = "Barcode Label";
             dgView.Columns[0].Width = 250;
 
             dgViewOPD.AllowUserToAddRows = false;
             dgViewOPD.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgViewOPD.MultiSelect = false;
-            dgViewOPD.ReadOnly = true;
+            dgViewOPD.MultiSelect = false;            
             dgViewOPD.SelectionChanged += new EventHandler(dgViewOPD_SelectionChanged);
             dgViewOPD.CellContentClick += new DataGridViewCellEventHandler(dgViewOPD_CellContentClick);
 
@@ -536,8 +534,9 @@ namespace CSharpBarcode128
                 return;
             }
 
-            string key = ((string)dgView.CurrentRow.Cells[0].Value).Substring(7, 3);
-            BarcodeItem item = FindItemInList(key, m_lstBarcode);
+            string key = (string)dgView.CurrentRow.Cells[0].Value;
+            string type = key.Substring(key.Length - 3, 3);
+            BarcodeItem item = FindItemInList(type, m_lstBarcode);
             if (item != null)
             {
                 pictureBox.Image = item.image;
