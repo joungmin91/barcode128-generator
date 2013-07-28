@@ -235,11 +235,15 @@
             // 
             // dgView
             // 
+            this.dgView.AllowUserToAddRows = false;
+            this.dgView.AllowUserToDeleteRows = false;
             this.dgView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgView.Location = new System.Drawing.Point(18, 187);
             this.dgView.Margin = new System.Windows.Forms.Padding(2);
+            this.dgView.MultiSelect = false;
             this.dgView.Name = "dgView";
             this.dgView.RowTemplate.Height = 24;
+            this.dgView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgView.Size = new System.Drawing.Size(210, 186);
             this.dgView.TabIndex = 15;
             this.dgView.SelectionChanged += new System.EventHandler(this.dgView_SelectionChanged);
@@ -530,7 +534,7 @@
             this.MainMenuStrip = this.menuStrip;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "mainFrm";
-            this.Text = "Barcode Generator";
+            this.Text = "Barcode Generator for HOSxP";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.mainFrm_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
