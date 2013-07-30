@@ -97,6 +97,7 @@
             this.txtAN.Name = "txtAN";
             this.txtAN.Size = new System.Drawing.Size(220, 23);
             this.txtAN.TabIndex = 1;
+            this.txtAN.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtAN_KeyPress);
             // 
             // btnGen
             // 
@@ -495,6 +496,7 @@
             this.txtHNOPD.Name = "txtHNOPD";
             this.txtHNOPD.Size = new System.Drawing.Size(188, 23);
             this.txtHNOPD.TabIndex = 21;
+            this.txtHNOPD.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtHNOPD_KeyPress);
             // 
             // btnGenOPD
             // 
