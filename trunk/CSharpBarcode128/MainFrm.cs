@@ -847,6 +847,22 @@ namespace CSharpBarcode128
                 printDoc.Print();
             }
         }
+
+        private void txtAN_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                btnGen_Click(null, null);
+            }
+        }
+
+        private void txtHNOPD_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                btnGenOPD_Click(null, null);
+            }
+        }
     }
 
     public class BarcodeItem
